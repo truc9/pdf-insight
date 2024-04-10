@@ -38,7 +38,7 @@ function App() {
     const data = new FormData();
     data.append("file", file);
 
-    fetch("http://localhost:8000/api/v1/pdfs", {
+    fetch("http://localhost:8000/api/v1/pdfs/extract", {
       method: "POST",
       body: data,
     })

@@ -8,5 +8,3 @@ install:
 
 dev:
 	uvicorn $(APP_MODULE) --host 0.0.0.0 --port $(PORT) --reload
-
-# .PHONY: venv activate install dev

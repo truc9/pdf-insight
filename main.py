@@ -1,6 +1,9 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
+
+from pdfinsight.extractor import PdfExtractor
 
 app = FastAPI()
 
@@ -28,7 +31,13 @@ async def extract_pdf(file: UploadFile):
     bytes = await file.read()
     size = len(bytes)
 
-    return JSONResponse({
-        "size": size,
-        "error": ""
-    }, 200)
+    extractor = PdfExtractor(bytes)
+    data = extractor.extract_all_lines()
+
+    return JSONResponse(
+        status_code=200,
+        content={
+            "size": size,
+            "data": jsonable_encoder(data)
+        }
+    )
