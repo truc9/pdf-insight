@@ -1,0 +1,4 @@
+fastapi==0.110.0
+uvicorn[standard]
+python-multipart
+PyPDF2
