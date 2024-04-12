@@ -1,6 +1,15 @@
-# pdf-insight
+# PDF Insight
 
 Understanding your PDF using LLM
+
+## Jargon
+
+- Embeddings: transform text into numerical representation
+    - Use for text translation
+    - Understanding text
+    - Analysing sentiments
+
+## Process
 
 Using RAG
 - Indexing: pipeline ingesting data from source and index it (OFFLINE)
@@ -13,6 +22,5 @@ Using RAG
     - Generate: using ChatModel/LLM (llama2) to provide answer using user questions & retrieved data
 
 
-
-
-
+## Reference
+- https://python.langchain.com/docs/integrations/llms/ollama/
