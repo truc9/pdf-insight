@@ -1,4 +1,12 @@
 fastapi==0.110.0
 uvicorn[standard]
 python-multipart
-PyPDF2
+pypdf
+pdfminer.six
+pdfminer
+chroma
+langchain
+langchain-community
+langchainhub
+bs4
+ollama

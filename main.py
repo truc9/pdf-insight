@@ -1,11 +1,13 @@
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 from pdfinsight.extractor import PdfExtractor
 
-app = FastAPI()
+app = FastAPI(
+    title="PDF Insight API"
+)
 
 origins = [
     "http://localhost:3000",
@@ -21,7 +23,7 @@ app.add_middleware(
 )
 
 
-@app.post("/api/v1/pdfs/extract")
+@app.post("/api/v1/extract")
 async def extract_pdf(file: UploadFile):
     if not file:
         return {
@@ -32,7 +34,7 @@ async def extract_pdf(file: UploadFile):
     size = len(bytes)
 
     extractor = PdfExtractor(bytes)
-    data = extractor.extract_all_lines()
+    data = extractor.extract()
 
     return JSONResponse(
         status_code=200,
