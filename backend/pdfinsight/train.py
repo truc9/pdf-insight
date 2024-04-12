@@ -9,4 +9,3 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 llm = ollama(model="llama2")
 
-llm.invoke

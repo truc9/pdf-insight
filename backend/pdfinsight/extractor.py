@@ -1,17 +1,17 @@
 import tempfile
 from io import StringIO
 from pypdf import PdfReader
-from pdfminer.high_level import extract_text, extract_text_to_fp
+from pdfminer.high_level import extract_text_to_fp
 
 
 class PdfExtractResponse:
-    def __init__(self, page_index, lines) -> None:
-        self.page_index = page_index
+    def __init__(self, page_number, lines) -> None:
+        self.page_number = page_number
         self.lines = lines
 
     def to_dict(self):
         return {
-            "page_index": self.page_index,
+            "page_number": self.page_number,
             "lines": self.lines
         }
 

@@ -1,7 +1,7 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi import FastAPI, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from pdfinsight.extractor import PdfExtractor
 
@@ -22,9 +22,8 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
-@app.post("/api/v1/extract")
-async def extract_pdf(file: UploadFile):
+@app.post("/api/v1/pdfs/upload")
+async def upload_pdf(file: UploadFile):
     if not file:
         return {
             "error": "No file uploaded"
