@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+langchain
+langchain-openai
+langchain_community
+langchain_text_splitters
+bs4
+chromadb
+sentence-transformers
+pypdf
