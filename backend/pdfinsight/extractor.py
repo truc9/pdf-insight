@@ -5,13 +5,13 @@ from pdfminer.high_level import extract_text_to_fp
 
 
 class PdfExtractResponse:
-    def __init__(self, page_number, lines) -> None:
-        self.page_number = page_number
+    def __init__(self, pageNumber, lines) -> None:
+        self.pageNumber = pageNumber
         self.lines = lines
 
     def to_dict(self):
         return {
-            "page_number": self.page_number,
+            "pageNumber": self.pageNumber,
             "lines": self.lines
         }
 
