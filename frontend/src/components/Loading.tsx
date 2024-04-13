@@ -1,9 +1,9 @@
-import { RiseLoader } from "react-spinners";
+import { ScaleLoader } from "react-spinners";
 
 export function Loading() {
   return (
     <div className="w-full h-full flex justify-center items-center">
-      <RiseLoader />
+      <ScaleLoader />
     </div>
   );
 }

@@ -22,7 +22,7 @@ export const FileUpload: React.FC<FileUploadProp> = ({
       return;
     }
 
-    const files = [];
+    const files: File[] = [];
     for (let i = 0; i < e.target.files.length; i++) {
       files.push(e.target.files[i]);
     }

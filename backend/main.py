@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from pdfinsight.extractor import PdfExtractor
+from pdfinsight.model import TextModel
 
 app = FastAPI(
     title="PDF Insight API"
@@ -41,4 +42,10 @@ async def upload_pdf(file: UploadFile):
             "size": size,
             "data": jsonable_encoder(data)
         }
+    )
+@app.post('/api/v1/train')
+async def train(req: TextModel):
+    return JSONResponse(
+        status_code=200,
+        content=jsonable_encoder(req)
     )

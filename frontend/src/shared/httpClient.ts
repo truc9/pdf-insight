@@ -1,11 +1,13 @@
 import axios from 'axios'
 
-function buildUrl(url: string) {
+type dynamic = any
+
+function apiUrl(url: string) {
     return `http://localhost:8000/${url}`
 }
 
-async function post(url: string, data: any) {
-    const response = await axios.post(buildUrl(url), data)
+async function post(url: string, data: dynamic) {
+    const response = await axios.post(apiUrl(url), data)
     return response.data
 }
 

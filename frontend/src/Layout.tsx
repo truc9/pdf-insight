@@ -1,10 +1,15 @@
 import React, { Suspense } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { IoDocumentOutline, IoSettingsOutline } from "react-icons/io5";
+import {
+  IoChatboxOutline,
+  IoCloudUploadOutline,
+  IoSettingsOutline,
+} from "react-icons/io5";
 import { Loading } from "@/components";
 
 const appRoutes: RouteData[] = [
-  { path: "/", icon: <IoDocumentOutline /> },
+  { path: "/", icon: <IoChatboxOutline /> },
+  { path: "/load", icon: <IoCloudUploadOutline /> },
   { path: "/settings", icon: <IoSettingsOutline /> },
 ];
 
