@@ -8,8 +8,10 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 
+
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
+
 
 def load_custom_source() -> bool:
     global retriever
@@ -39,6 +41,7 @@ def load_custom_source() -> bool:
 
     return True
 
+
 def chat(question: str):
     llm = ChatOllama(model="llama2")
 
@@ -66,6 +69,7 @@ def chat(question: str):
         print(chunk, end="", flush=True)
 
     print("\nThanks for using TrucGPT\n")
+
 
 if __name__ == "__main__":
     print("Welcome to TrucGPT, LLM in your local")
