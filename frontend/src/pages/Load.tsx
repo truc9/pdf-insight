@@ -1,37 +1,29 @@
-import React, { useState } from "react";
-import { Button, FileUpload, Loading } from "@/components";
-import { PageTextModel } from "@/models";
+import { useEffect, useState } from "react";
+import { Button } from "@/components";
 import httpClient from "@/shared/httpClient";
 import { toast } from "react-toastify";
 
 function Load() {
-  const [files, setFiles] = React.useState<File[]>([]);
-  const [pages, setPages] = React.useState<PageTextModel[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingLoad, setLoadingLoad] = useState(false);
+  const [docs, setDocs] = useState<string[]>([]);
 
-  async function train() {
-    if (!files.length) {
-      alert("No PDF datasource files");
-      return;
-    }
+  useEffect(() => {
+    (async () => {
+      const docs = await httpClient.get("api/v1/documents/paths");
+      setDocs(docs);
+    })();
+  }, []);
 
+  async function loadDoc(doc: string) {
     try {
-      setLoading(true);
-      // Only single upload
-      const req = new FormData();
-      req.append("file", files[0]);
-      const result = await httpClient.post("api/v1/pdfs/upload", req);
-      const pageData = result.data as PageTextModel[];
-      setPages(pageData);
+      setLoadingLoad(true);
+      await httpClient.get(`api/v1/documents/load?doc=${doc}`);
+      toast.success("Load to vectordb successfully");
     } catch (err) {
       toast.error("Unable to load from PDF.");
     } finally {
-      setLoading(false);
+      setLoadingLoad(false);
     }
-  }
-
-  function onFileChange(files: File[]) {
-    setFiles(files);
   }
 
   return (
@@ -39,39 +31,24 @@ function Load() {
       <div className="text-xl font-bold">
         Upload your own data and feed the LLM
       </div>
-      <div className="flex items-center gap-3">
-        <FileUpload mode="single" onFileChange={onFileChange} />
-        {!!files.length && (
-          <Button
-            loading={loading}
-            onClick={train}
-            label="✨ Load your source"
-          />
-        )}
-      </div>
-      {loading && (
-        <div className="flex-1 flex flex-col gap-3 overflow-y-auto p-3 backdrop-opacity-10 backdrop-blur bg-white/30 rounded border">
-          <Loading />
-        </div>
-      )}
-      {!loading && !!pages.length && (
-        <div className="flex flex-col gap-3 overflow-y-auto p-3 bg-white rounded border shadow-inner">
-          {pages.map((p, i) => {
+
+      <div className="flex flex-col gap-2">
+        {docs &&
+          docs.map((doc, index) => {
             return (
-              <div key={i} className="p-3 border rounded bg-zinc-50 relative">
-                <h3 className="absolute px-3 bg-green-500 text-white top-0 right-0">
-                  Page {p.pageNumber}
-                </h3>
-                <div className="text-xs font-mono flex flex-col gap-2 text-justify">
-                  {p.lines.map((text, j) => {
-                    return <div key={j}>{text}</div>;
-                  })}
+              <div className="flex items-center justify-between p-2 bg-slate-200 rounded border">
+                <div className="flex items-center gap-3 p-5" key={index}>
+                  <span>{doc}</span>
                 </div>
+                <Button
+                  label="Load to VectorDB"
+                  loading={loadingLoad}
+                  onClick={() => loadDoc(doc)}
+                ></Button>
               </div>
             );
           })}
-        </div>
-      )}
+      </div>
     </div>
   );
 }

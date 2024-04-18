@@ -10,3 +10,5 @@ langchain-community
 langchainhub
 bs4
 ollama
+chromadb
+sentence_transformers

@@ -1,7 +1,7 @@
 VENV_NAME := .venv
 REQUIREMENTS := requirements.txt
 APP_MODULE := main:app
-PORT := 8000
+PORT := 8080
 
 install:
 	pip3 install -r requirements.txt
