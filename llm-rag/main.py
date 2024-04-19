@@ -10,6 +10,11 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders.pdf import PyPDFLoader
 
+from pydantic import BaseModel
+
+class ChatMessage(BaseModel):
+    message: str
+
 vectorDb = None
 
 llm = ChatOllama(model="llama2")
@@ -55,7 +60,6 @@ async def get_doc_paths():
         content=res
     )
 
-
 @app.get("/api/v1/documents/load")
 async def load_doc(doc: str):
     try:
@@ -80,3 +84,7 @@ async def load_doc(doc: str):
     except Exception as error:
         print(error)
         return JSONResponse(status_code=500, content="Unable to load PDF to vectorstore")
+
+@app.post("/api/v1/chat")
+async def chat(message: ChatMessage):
+    return JSONResponse(status_code=200, content=message)
