@@ -67,17 +67,16 @@ def load_doc(doc: SourceDocModel):
         )
 
 
-
 @app.post("/api/v1/chat")
 async def chat(q: QuestionModel):
     question = q.question
-    print(f"getting question: {question}")
-    generator = answer_generator(question=question)
+    generator = answer(question=question)
     return StreamingResponse(generator, media_type="text/event-stream")
 
 
-async def answer_generator(question: str):
+async def answer(question: str):
     llm = ChatOllama(model="llama3")
+
     embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
     vectorstore = Chroma(

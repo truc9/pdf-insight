@@ -28,7 +28,7 @@ const NavItem: React.FC<NavItemProp> = ({ route }) => {
   return (
     <NavLink
       to={route.path}
-      className="transition-all p-3 rounded hover:bg-rose-400 hover:text-white [&.active]:bg-rose-400 [&.active]:text-white"
+      className="transition-all p-3 rounded hover:bg-green-400 hover:text-white [&.active]:bg-green-400 [&.active]:text-white"
     >
       {route.label && <div>{route.label}</div>}
       {route.icon && <div className="text-2xl">{route.icon}</div>}

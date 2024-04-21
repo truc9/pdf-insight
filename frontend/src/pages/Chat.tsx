@@ -4,14 +4,16 @@ import { useState } from "react";
 import { LiaRobotSolid } from "react-icons/lia";
 import { PiMagicWandThin, PiUserCircle } from "react-icons/pi";
 import { toast } from "react-toastify";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-interface C {
+interface ChatMessage {
   role: "user" | "bot";
   content: string;
 }
 
 export default function Chat() {
-  const [conversation, setConversation] = useState<C[]>([]);
+  const [chat, setChat] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -21,12 +23,12 @@ export default function Chat() {
       toast.error("Question not provided.");
       return;
     }
-    setConversation([...conversation, { role: "user", content: question }]);
-    setQuestion("");
+    setChat([...chat, { role: "user", content: question }]);
     setLoading(true);
+    setQuestion("");
     const response = await httpClient.post("api/v1/chat", { question });
-    setConversation([
-      ...conversation,
+    setChat([
+      ...chat,
       { role: "user", content: question },
       { role: "bot", content: response },
     ]);
@@ -41,9 +43,14 @@ export default function Chat() {
   return (
     <div className="flex flex-col bg-slate-50 w-full justify-center items-center">
       <div className="flex flex-col p-5 gap-3 h-full w-full lg:w-1/2 xl:w-2/3">
-        <div className="flex-1 border p-3 rounded bg-white flex flex-col gap-2">
-          {conversation.map((chat, index) => (
-            <div key={index} className="bg-slate-50 p-2 rounded">
+        <div className="flex-1 border p-3 rounded bg-white flex flex-col gap-2 overflow-y-auto">
+          {chat.map((chat, index) => (
+            <div
+              key={index}
+              className={`${
+                chat.role === "user" ? "bg-white" : "bg-slate-50"
+              } p-2 rounded`}
+            >
               <div className="flex gap-2 items-center">
                 <div>
                   {chat.role == "user" ? (
@@ -52,7 +59,11 @@ export default function Chat() {
                     <LiaRobotSolid size={22} />
                   )}
                 </div>
-                {chat.content}
+                <div className="flex flex-col">
+                  <Markdown remarkPlugins={[remarkGfm]}>
+                    {chat.content}
+                  </Markdown>
+                </div>
               </div>
             </div>
           ))}
@@ -70,8 +81,8 @@ export default function Chat() {
             onChange={handleInputChange}
             value={question}
             type="text"
-            placeholder="Ask me anything ?"
-            className="border px-3 py-2 w-full focus:outline-none focus:ring-2 ring-rose-500 ring-offset-2 rounded"
+            placeholder="Tell me what you want to know?"
+            className="border px-3 py-2 w-full focus:outline-none focus:ring-2 ring-green-500 ring-offset-2 rounded"
           />
           <Button
             disabled={!question}
