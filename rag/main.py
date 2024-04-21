@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -8,26 +10,18 @@ from langchain_community.embeddings.sentence_transformer import (
     SentenceTransformerEmbeddings,
 )
 from langchain_community.vectorstores.chroma import Chroma
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain import hub
+from fastapi.responses import StreamingResponse
 
-from application.models import QuestionModel, SourceDocModel
+from application.models import SourceDocModel
 from infrastructure.utils import Utils
 
-prompt = ChatPromptTemplate.from_template(
-    """
-    Use the following pieces of context to answer the question at the end.
-    If you don't know the answer, just say that you don't know, don't try to make up an answer.
-    Use three sentences maximum and keep the answer as concise as possible.
-    Always say "thanks for asking!" at the end of the answer.
-    
-    {context}
-    Question: {question}
-    Answer: 
-"""
-)
-
 app = FastAPI(title="PDF Insight API", default_response_class=ORJSONResponse)
+
+VECTOR_STORE_PATH = os.path.join(os.curdir, "tmp/vectordb")
 
 origins = ["http://localhost:3000", "http://localhost:5173"]
 
@@ -47,7 +41,7 @@ async def get_doc_paths():
 
 
 @app.post("/api/v1/documents/load")
-async def load_doc(doc: SourceDocModel):
+def load_doc(doc: SourceDocModel):
     try:
         loader = PyPDFLoader(doc.path)
         documents = loader.load()
@@ -55,13 +49,9 @@ async def load_doc(doc: SourceDocModel):
         splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
         docs = splitter.split_documents(documents)
 
-        embedding_function = SentenceTransformerEmbeddings(
-            model_name="all-MiniLM-L6-v2"
-        )
+        embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
-        db = Chroma.from_documents(
-            docs, embedding_function, persist_directory="./chroma_db"
-        )
+        db = Chroma.from_documents(docs, embedding, persist_directory=VECTOR_STORE_PATH)
 
         db.persist()
 
@@ -78,7 +68,37 @@ async def load_doc(doc: SourceDocModel):
 
 
 @app.post("/api/v1/chat")
-async def chat(model: QuestionModel):
-    llm = ChatOllama(model="llama2")
+async def chat(req: dict):
+    messages = req["messages"]
+    current_question = messages[len(messages) - 1]["content"]
+    prev_questions = messages[: len(messages) - 2]
+    print(prev_questions)
+    generator = answer_generator(question=current_question)
+    return StreamingResponse(generator, media_type="text/event-stream")
 
-    return {"question": model.question}
+
+async def answer_generator(question: str):
+    llm = ChatOllama(model="llama3")
+    embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+
+    vectorstore = Chroma(
+        persist_directory=VECTOR_STORE_PATH,
+        embedding_function=embedding,
+    )
+    retriever = vectorstore.as_retriever()
+
+    prompt = hub.pull("rlm/rag-prompt")
+
+    def format_docs(docs):
+        return "\n\n".join(doc.page_content for doc in docs)
+
+    chain = (
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
+    )
+
+    async for chunk in chain.astream(question):
+        print(chunk, end="", flush=True)
+        yield chunk or ""
