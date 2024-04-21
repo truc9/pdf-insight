@@ -41,7 +41,7 @@ export default function Layout() {
     <div className="w-screen h-screen flex justify-start bg-white">
       <nav className="w-16 h-full border-r">
         <div className="flex flex-col items-center justify-center text-center h-16 w-full text-lg font-extrabold">
-          PDFI
+          PDFi
         </div>
         <div className="flex flex-col items-center justify-center py-2">
           {appRoutes.map((route, idx) => {

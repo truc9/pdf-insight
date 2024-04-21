@@ -16,7 +16,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain import hub
 from fastapi.responses import StreamingResponse
 
-from application.models import SourceDocModel
+from application.models import SourceDocModel, QuestionModel
 from infrastructure.utils import Utils
 
 app = FastAPI(title="PDF Insight API", default_response_class=ORJSONResponse)
@@ -67,13 +67,12 @@ def load_doc(doc: SourceDocModel):
         )
 
 
+
 @app.post("/api/v1/chat")
-async def chat(req: dict):
-    messages = req["messages"]
-    current_question = messages[len(messages) - 1]["content"]
-    prev_questions = messages[: len(messages) - 2]
-    print(prev_questions)
-    generator = answer_generator(question=current_question)
+async def chat(q: QuestionModel):
+    question = q.question
+    print(f"getting question: {question}")
+    generator = answer_generator(question=question)
     return StreamingResponse(generator, media_type="text/event-stream")
 
 

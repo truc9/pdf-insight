@@ -29,16 +29,16 @@ function Load() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-2 p-5 bg-slate-50">
+    <div className="w-full flex flex-col gap-2 p-5 bg-slate-50 text-slate-600">
       <div className="text-xl font-bold">
-        Upload your own data and feed the LLM
+        Upload your custom document, understand your own document
       </div>
 
       <div className="flex flex-col gap-2">
         {docs &&
           docs.map((srcDoc, index) => {
             return (
-              <div className="flex items-center justify-between p-2 bg-white rounded border">
+              <div className="flex items-center justify-between p-2 bg-white rounded border border-dashed">
                 <div className="flex items-center gap-3 p-5" key={index}>
                   <span>{srcDoc.name}</span>
                 </div>
