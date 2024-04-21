@@ -1,0 +1,3 @@
+
+class HttpResult(Response):
+    pass

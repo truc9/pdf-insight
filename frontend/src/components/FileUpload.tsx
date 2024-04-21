@@ -59,7 +59,7 @@ export const FileUpload: React.FC<FileUploadProp> = ({
       />
       <div
         onClick={click}
-        className="shadow-sm bg-white border pl-4 pr-10 py-3 min-w-72 hover:cursor-pointer rounded active:ring-2 ring-slate-500 ring-offset-2"
+        className="shadow-sm bg-white border pl-4 pr-10 py-3 min-w-72 hover:cursor-pointer rounded active:ring-2 ring-green-500 ring-offset-2"
       >
         <span className="text-sm">
           {description || "Click here to upload file..."}

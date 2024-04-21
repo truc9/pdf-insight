@@ -69,7 +69,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+tmp/docs/_build/
 
 # PyBuilder
 .pybuilder/
@@ -229,7 +229,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+tmp/docs/_build/
 
 # PyBuilder
 .pybuilder/
@@ -319,5 +319,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-/docs
-/chroma_db
+tmp/

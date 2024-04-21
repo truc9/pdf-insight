@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components";
 import httpClient from "@/shared/httpClient";
 import { toast } from "react-toastify";
+import { SourceDoc } from "@/models/SourceDoc";
+import { FiUpload } from "react-icons/fi";
 
 function Load() {
-  const [loadingLoad, setLoadingLoad] = useState(false);
-  const [docs, setDocs] = useState<string[]>([]);
+  const [loadingDoc, setLoadingDoc] = useState<SourceDoc | null>(null);
+  const [docs, setDocs] = useState<SourceDoc[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -14,15 +16,15 @@ function Load() {
     })();
   }, []);
 
-  async function loadDoc(doc: string) {
+  async function loadDoc(srcDoc: SourceDoc) {
     try {
-      setLoadingLoad(true);
-      await httpClient.get(`api/v1/documents/load?doc=${doc}`);
-      toast.success("Load to vectordb successfully");
+      setLoadingDoc(srcDoc);
+      await httpClient.post(`api/v1/documents/load`, srcDoc);
+      toast.success(`Load ${srcDoc.name} successfully.`);
     } catch (err) {
       toast.error("Unable to load from PDF.");
     } finally {
-      setLoadingLoad(false);
+      setLoadingDoc(null);
     }
   }
 
@@ -34,16 +36,17 @@ function Load() {
 
       <div className="flex flex-col gap-2">
         {docs &&
-          docs.map((doc, index) => {
+          docs.map((srcDoc, index) => {
             return (
-              <div className="flex items-center justify-between p-2 bg-slate-200 rounded border">
+              <div className="flex items-center justify-between p-2 bg-white rounded border">
                 <div className="flex items-center gap-3 p-5" key={index}>
-                  <span>{doc}</span>
+                  <span>{srcDoc.name}</span>
                 </div>
                 <Button
-                  label="Load to VectorDB"
-                  loading={loadingLoad}
-                  onClick={() => loadDoc(doc)}
+                  icon={<FiUpload />}
+                  label="Load source"
+                  loading={loadingDoc?.name === srcDoc.name}
+                  onClick={() => loadDoc(srcDoc)}
                 ></Button>
               </div>
             );
