@@ -1,4 +1,7 @@
-# 🦙🦙🦙 PDF Insight
+<div style="text-align:center;">
+  <img src="./doc/logo.jpeg" height="400">
+  <h1>PDF Insight</h1>
+</div>
 
 Experiment project with LLM RAG using llama3 and langchain
 
