@@ -2,11 +2,14 @@
 
 Experiment project with LLM RAG using llama3 and langchain
 
+<sub>⚠️ This project not supported upload file from UI yet, in order to load PDF, place PDF documents into directory `rag/tmp/docs` and load from UI</sub>
+
 ## Roadmap
 - [x] Load PDFs from directory
 - [x] Q&A with context from loaded PDFs
 - [ ] Stream text to UI
 - [ ] Format chat response
+- [ ] Upload PDF from UI
 
 ## Screenshots
 
@@ -17,3 +20,4 @@ Experiment project with LLM RAG using llama3 and langchain
 ## Reference
 - https://ollama.com/library/llama3
 - https://python.langchain.com/docs/use_cases/question_answering
+
