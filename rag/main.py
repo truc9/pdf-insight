@@ -4,20 +4,17 @@ from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.responses import ORJSONResponse
+from fastapi.responses import StreamingResponse
+from langchain import hub
 from langchain_community.chat_models.ollama import ChatOllama
 from langchain_community.document_loaders.pdf import PyPDFLoader
-from langchain_community.embeddings.sentence_transformer import (
-    SentenceTransformerEmbeddings,
-)
-from langchain_community.vectorstores.chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain import hub
-from fastapi.responses import StreamingResponse
 
 from application.models import SourceDocModel, QuestionModel
 from infrastructure.utils import Utils
+from infrastructure.vector_store import VectorStore
 
 app = FastAPI(title="PDF Insight API", default_response_class=ORJSONResponse)
 
@@ -48,12 +45,8 @@ def load_doc(doc: SourceDocModel):
 
         splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
         docs = splitter.split_documents(documents)
-
-        embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-
-        db = Chroma.from_documents(docs, embedding, persist_directory=VECTOR_STORE_PATH)
-
-        db.persist()
+        vectorstore = VectorStore(VECTOR_STORE_PATH)
+        vectorstore.load_docs(docs)
 
         return JSONResponse(
             status_code=status.HTTP_200_OK, content="Load doc successfully"
@@ -76,14 +69,8 @@ async def chat(q: QuestionModel):
 
 async def answer(question: str):
     llm = ChatOllama(model="llama3")
-
-    embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-
-    vectorstore = Chroma(
-        persist_directory=VECTOR_STORE_PATH,
-        embedding_function=embedding,
-    )
-    retriever = vectorstore.as_retriever()
+    vectorstore = VectorStore(VECTOR_STORE_PATH)
+    retriever = vectorstore.get_db().as_retriever()
 
     prompt = hub.pull("rlm/rag-prompt")
 
