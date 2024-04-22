@@ -11,6 +11,7 @@ from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.prompts import PromptTemplate
 
 from application.models import SourceDocModel, QuestionModel
 from infrastructure.utils import Utils
@@ -72,7 +73,17 @@ async def answer(question: str):
     vectorstore = VectorStore(VECTOR_STORE_PATH)
     retriever = vectorstore.get_db().as_retriever()
 
-    prompt = hub.pull("rlm/rag-prompt")
+    template = """Use the following pieces of context to answer the question at the end.
+    If you don't know the answer, just say that you don't know, don't try to make up an answer.
+    Use three sentences maximum and keep the answer as concise as possible.
+    Always say "thanks for asking!" at the end of the answer.
+
+    {context}
+
+    Question: {question}
+
+    Helpful Answer:"""
+    prompt = PromptTemplate.from_template(template)
 
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)

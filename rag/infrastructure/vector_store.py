@@ -8,6 +8,7 @@ class VectorStore:
 
     def __init__(self, path) -> None:
         self._path = path
+        
     def load_docs(self, docs: list[Document]):
         db = Chroma.from_documents(docs, self._embedding, persist_directory=self.path)
         db.persist()

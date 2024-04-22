@@ -10,16 +10,9 @@ Experiment project with LLM RAG using llama3 and langchain
 
 ## Screenshots
 
-<table>
-    <tr>
-        <td>
-          <img src="./doc/sc1.png" />
-        </td>
-        <td>
-         <img src="./doc/sc2.png" />
-        </td>
-    </tr>
-</table>
+![alt text](./doc/sc1.png "Title")
+
+![alt text](./doc/sc2.png "Title")
 
 ## Reference
 - https://ollama.com/library/llama3
