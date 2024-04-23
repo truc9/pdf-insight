@@ -1,6 +1,6 @@
 import { Button, Loading } from "@/components";
 import httpClient from "@/shared/httpClient";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LiaRobotSolid } from "react-icons/lia";
 import { PiMagicWandThin, PiUserCircle } from "react-icons/pi";
 import { toast } from "react-toastify";
@@ -16,6 +16,7 @@ export default function Chat() {
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
+  const [answer, setAnswer] = useState<string>('');
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -26,13 +27,24 @@ export default function Chat() {
     setChat([...chat, { role: "user", content: question }]);
     setLoading(true);
     setQuestion("");
-    const response = await httpClient.post("api/v1/chat", { question });
+    console.log('start streaming');
+    let str = '';
+    for await (const chunk of httpClient.streaming('api/v1/chat', { question })) {
+      setLoading(false);
+      console.log(chunk, '');
+      setAnswer((prev) => prev + chunk);
+      str += chunk;
+    }
+
+    console.log('end streaming');
+
     setChat([
       ...chat,
       { role: "user", content: question },
-      { role: "bot", content: response },
+      { role: "bot", content: str },
     ]);
-    setLoading(false);
+    setAnswer('');
+
     setQuestion("");
   }
 
@@ -47,9 +59,8 @@ export default function Chat() {
           {chat.map((chat, index) => (
             <div
               key={index}
-              className={`${
-                chat.role === "user" ? "bg-white" : "bg-slate-50"
-              } p-2 rounded`}
+              className={`${chat.role === "user" ? "bg-white" : "bg-slate-50"
+                } p-2 rounded`}
             >
               <div className="flex gap-2 items-center">
                 <div>
@@ -67,6 +78,18 @@ export default function Chat() {
               </div>
             </div>
           ))}
+          {answer && (
+            <div className="flex gap-2 items-center bg-slate-50">
+              <div>
+                <LiaRobotSolid size={22} />
+              </div>
+              <div className="flex flex-col">
+                <Markdown remarkPlugins={[remarkGfm]}>
+                  {answer}
+                </Markdown>
+              </div>
+            </div>
+          )}
           {loading && (
             <>
               <div className="bg-slate-50 p-2 text-sm rounded">
