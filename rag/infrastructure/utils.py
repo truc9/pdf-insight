@@ -6,7 +6,7 @@ class Utils:
 
     @staticmethod
     def get_docs():
-        doc_dir = os.path.join(os.curdir, "tmp/docs")
+        doc_dir = os.path.join(os.curdir, "tmp", "docs")
         result = []
         for file_path in os.listdir(doc_dir):
             if os.path.isfile(os.path.join(doc_dir, file_path)):
