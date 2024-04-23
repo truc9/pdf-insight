@@ -24,3 +24,4 @@ Experiment project with LLM RAG using llama3 and langchain
 - https://ollama.com/library/llama3
 - https://python.langchain.com/docs/use_cases/question_answering
 
+<sub>Logo generated with Dream Studio (https://beta.dreamstudio.ai/)</sub>
