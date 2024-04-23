@@ -79,14 +79,16 @@ export default function Chat() {
             </div>
           ))}
           {answer && (
-            <div className="flex gap-2 items-center bg-slate-50">
-              <div>
-                <LiaRobotSolid size={22} />
-              </div>
-              <div className="flex flex-col">
-                <Markdown remarkPlugins={[remarkGfm]}>
-                  {answer}
-                </Markdown>
+            <div className='p-2 rounded bg-slate-50'>
+              <div className="flex gap-2 items-center">
+                <div>
+                  <LiaRobotSolid size={22} />
+                </div>
+                <div className="flex flex-col">
+                  <Markdown remarkPlugins={[remarkGfm]}>
+                    {answer}
+                  </Markdown>
+                </div>
               </div>
             </div>
           )}
