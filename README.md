@@ -23,7 +23,7 @@ Experiment project with LLM RAG using llama3 and langchain
 ## Roadmap
 - [x] Load PDFs from directory
 - [x] Q&A with context from loaded PDFs
-- [ ] Stream text to UI
+- [x] Stream text to UI
 - [ ] Format chat response
 - [ ] Upload PDF from UI
 - [ ] Measure performance & reliability
