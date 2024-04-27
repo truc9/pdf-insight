@@ -1,4 +1,4 @@
-import { Button, Loading } from "@/components";
+import { Button } from "@/components";
 import httpClient from "@/shared/httpClient";
 import { useState } from "react";
 import { LiaRobotSolid } from "react-icons/lia";
@@ -6,6 +6,7 @@ import { PiMagicWandThin, PiUserCircle } from "react-icons/pi";
 import { toast } from "react-toastify";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { TypingLoading } from "@/components/Loading";
 
 interface ChatMessage {
   role: "user" | "bot";
@@ -96,7 +97,7 @@ export default function Chat() {
           {loading && (
             <>
               <div className="bg-slate-50 p-2 text-sm rounded">
-                <Loading />
+                <TypingLoading />
               </div>
             </>
           )}
