@@ -13,3 +13,4 @@ ollama
 chromadb
 sentence_transformers
 orjson
+python-dotenv
