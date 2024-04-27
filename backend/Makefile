@@ -1,5 +1,5 @@
 REQUIREMENTS := requirements.txt
-APP_MODULE := main:app
+APP_MODULE := application.pdfinsight:app
 PORT := 8080
 
 install:
@@ -8,4 +8,7 @@ install:
 dev:
 	@python main.py
 
-.PHONY: install dev
+devu:
+	@uvicorn $(APP_MODULE) --host localhost --port 8080 --reload
+
+.PHONY: install dev devu

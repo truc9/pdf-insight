@@ -35,11 +35,11 @@ async def answer(question: str):
     Helpful Answer:"""
     prompt = PromptTemplate.from_template(template)
 
-    def format_docs(docs):
+    def format(docs):
         return "\n\n".join(doc.page_content for doc in docs)
 
     chain = (
-            {"context": retriever | format_docs, "question": RunnablePassthrough()}
+            {"context": retriever | format, "question": RunnablePassthrough()}
             | prompt
             | llm
             | StrOutputParser()

@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 
-from routers import chat, docs
+from routers import chats, docs
 
 env = dotenv_values(".env")
 
@@ -19,5 +19,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router=chat.router)
+app.include_router(router=chats.router)
 app.include_router(router=docs.router)
