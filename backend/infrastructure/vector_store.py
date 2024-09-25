@@ -1,13 +1,13 @@
 import os
 
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 
 VECTOR_STORE_PATH = os.path.join("tmp", "vectordb")
 
 class VectorStore:
-    _embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    _embedding = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
     def __init__(self) -> None:
         self._path = VECTOR_STORE_PATH

@@ -56,9 +56,9 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col bg-slate-50 w-full justify-center items-center">
-      <div className="flex flex-col p-5 gap-3 h-full w-full lg:w-1/2 xl:w-2/3">
-        <div className="flex-1 border p-3 rounded bg-white flex flex-col gap-2 overflow-y-auto">
+    <div className="flex flex-col bg-slate-300 w-full justify-center items-center">
+      <div className="flex flex-col p-5 gap-3 h-full w-full xl:w-3/5 lg:w-2/3">
+        <div className="flex-1 border p-3 rounded bg-white flex flex-col gap-2 overflow-y-auto shadow-lg">
           {chat.map((chat, index) => (
             <div
               key={index}
@@ -83,7 +83,7 @@ export default function Chat() {
             </div>
           ))}
           {answer && (
-            <div className="p-2 rounded bg-slate-50">
+            <div className="p-2 rounded bg-slate-50 shadow-lg">
               <div className="flex gap-2 items-center">
                 <div>
                   <LiaRobotSolid size={22} />
@@ -96,7 +96,7 @@ export default function Chat() {
           )}
           {loading && (
             <>
-              <div className="bg-slate-50 p-2 text-sm rounded">
+              <div className="bg-slate-50 p-2 text-sm rounded shadow-lg">
                 <TypingLoading />
               </div>
             </>
@@ -109,12 +109,12 @@ export default function Chat() {
             value={question}
             type="text"
             placeholder="Tell me what you want to know?"
-            className="border px-3 py-2 w-full focus:outline-none focus:ring-2 ring-green-500 ring-offset-2 rounded"
+            className="border px-3 py-3 w-full focus:outline-none ring-2 ring-green-500 ring-offset-2 rounded shadow-lg"
           />
           <Button
             disabled={!question}
             loading={loading}
-            icon={<PiMagicWandThin size={20} />}
+            icon={<PiMagicWandThin size={18} />}
             showLabel={false}
             type="submit"
           ></Button>

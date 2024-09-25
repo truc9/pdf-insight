@@ -29,9 +29,9 @@ function Load() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-2 p-5 bg-slate-50 text-slate-600">
+    <div className="w-full flex flex-col gap-2 p-5 bg-slate-300 text-slate-600">
       <div className="text-xl font-bold">
-        Upload your custom document, understand your own document
+        Feed your PDF to Large Language Model
       </div>
 
       <div className="flex flex-col gap-2">

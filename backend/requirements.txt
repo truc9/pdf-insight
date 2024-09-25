@@ -7,6 +7,7 @@ pdfminer
 chroma
 langchain
 langchain-community
+langchain-huggingface
 langchainhub
 bs4
 ollama

@@ -11,7 +11,7 @@ from infrastructure.vector_store import VectorStore
 router = APIRouter(prefix="/api/v1")
 
 
-@router.post("/chat", tags=["chat"])
+@router.post("/chat", tags=["Chats"])
 async def chat(q: QuestionModel):
     question = q.question
     generator = answer(question=question)
@@ -19,7 +19,7 @@ async def chat(q: QuestionModel):
 
 
 async def answer(question: str):
-    llm = ChatOllama(model="llama3")
+    llm = ChatOllama(model="llama3.1")
     vectorstore = VectorStore()
     retriever = vectorstore.get_db().as_retriever()
 
