@@ -4,13 +4,16 @@ from fastapi.responses import JSONResponse
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from application.model import SourceDocModel
+from app.model import SourceDocModel
 from core.doc import SourceDoc
-from infrastructure.vector_store import VectorStore
+from infra.vector_store import VectorStore
 
 router = APIRouter(prefix="/api/v1/documents")
 
 UPLOAD_DIR = os.path.join(os.path.abspath(os.path.curdir), "tmp", "docs")
+
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 @router.get("/paths", tags=["Documents"])
 async def get_docs():
@@ -20,14 +23,15 @@ async def get_docs():
             result.append(SourceDoc(file_path, os.path.join(UPLOAD_DIR, file_path)))
     return result
 
+
 @router.post("/upload", tags=["Documents"])
 async def upload(
     files: list[UploadFile],
 ):
     success_paths = []
     failed_paths = []
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
-    print(f'Ensure upload dir exist: {UPLOAD_DIR}')
+    # os.makedirs(UPLOAD_DIR, exist_ok=True)
+    # print(f"Ensure upload dir exist: {UPLOAD_DIR}")
 
     for file in files:
         file_path = f"{UPLOAD_DIR}/{file.filename}"
@@ -44,6 +48,7 @@ async def upload(
             "failed": failed_paths,
         },
     )
+
 
 @router.post("/load", tags=["Documents"])
 def load_doc(doc: SourceDocModel):

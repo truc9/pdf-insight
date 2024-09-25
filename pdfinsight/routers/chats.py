@@ -5,8 +5,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
-from application.model import QuestionModel
-from infrastructure.vector_store import VectorStore
+from app.model import QuestionModel
+from infra.vector_store import VectorStore
 
 router = APIRouter(prefix="/api/v1")
 
@@ -39,10 +39,10 @@ async def answer(question: str):
         return "\n\n".join(doc.page_content for doc in docs)
 
     chain = (
-            {"context": retriever | format, "question": RunnablePassthrough()}
-            | prompt
-            | llm
-            | StrOutputParser()
+        {"context": retriever | format, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
     )
 
     async for chunk in chain.astream(question):
