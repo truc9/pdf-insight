@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { FiCornerUpRight, FiRadio, FiUploadCloud } from "react-icons/fi";
+import { FiRadio, FiUploadCloud } from "react-icons/fi";
+import { FaRobot } from "react-icons/fa6";
 import { toast } from "react-toastify";
 
 import { Button, FileUpload } from "@/components";
@@ -24,7 +25,7 @@ function Uploads() {
     try {
       setLoadingDoc(srcDoc);
       await httpClient.post(`api/v1/documents/load`, srcDoc);
-      toast.success(`Load ${srcDoc.name} successfully.`);
+      toast.success(`Feed ${srcDoc.name} successfully.`);
     } catch (err) {
       toast.error("Unable to load from PDF.");
     } finally {
@@ -79,8 +80,8 @@ function Uploads() {
                   <span>{srcDoc.name}</span>
                 </div>
                 <Button
-                  icon={<FiCornerUpRight />}
-                  label="Feed LLM"
+                  icon={<FaRobot />}
+                  label="Feed ChatBot"
                   loading={loadingDoc?.name === srcDoc.name}
                   onClick={() => loadDoc(srcDoc)}
                 ></Button>

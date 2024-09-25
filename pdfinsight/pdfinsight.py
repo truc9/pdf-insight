@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 
-from routers import chats, documents
+from app.routers import chats, documents
 
 env = dotenv_values(".env")
 
