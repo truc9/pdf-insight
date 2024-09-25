@@ -1,1 +1,9 @@
-export type { PageTextModel } from './PageTextModel'
+export interface PageTextModel {
+    pageNumber: number;
+    lines: string[];
+}
+
+export interface SourceDocModel {
+    name: string;
+    path: string;
+}

@@ -1,19 +1,20 @@
-import { Button } from "@/components";
-import httpClient from "@/shared/httpClient";
 import { useState } from "react";
 import { LiaRobotSolid } from "react-icons/lia";
 import { PiMagicWandThin, PiUserCircle } from "react-icons/pi";
-import { toast } from "react-toastify";
 import Markdown from "react-markdown";
+import { toast } from "react-toastify";
 import remarkGfm from "remark-gfm";
+
+import { Button } from "@/components";
 import { TypingLoading } from "@/components/Loading";
+import httpClient from "@/shared/http-client";
 
 interface ChatMessage {
   role: "user" | "bot";
   content: string;
 }
 
-export default function Chat() {
+export default function ChatBox() {
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);

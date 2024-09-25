@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components";
-import httpClient from "@/shared/httpClient";
-import { toast } from "react-toastify";
-import { SourceDoc } from "@/models/SourceDoc";
 import { FiUpload } from "react-icons/fi";
+import { toast } from "react-toastify";
 
-function Load() {
-  const [loadingDoc, setLoadingDoc] = useState<SourceDoc | null>(null);
-  const [docs, setDocs] = useState<SourceDoc[]>([]);
+import { Button } from "@/components";
+import { SourceDocModel } from "@/models";
+import httpClient from "@/shared/http-client";
+
+function Uploads() {
+  const [loadingDoc, setLoadingDoc] = useState<SourceDocModel | null>(null);
+  const [docs, setDocs] = useState<SourceDocModel[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -16,7 +17,7 @@ function Load() {
     })();
   }, []);
 
-  async function loadDoc(srcDoc: SourceDoc) {
+  async function loadDoc(srcDoc: SourceDocModel) {
     try {
       setLoadingDoc(srcDoc);
       await httpClient.post(`api/v1/documents/load`, srcDoc);
@@ -56,4 +57,4 @@ function Load() {
   );
 }
 
-export default Load;
+export default Uploads;

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./doc/logo.jpeg" height="400">
+  <img src="./docs/logo.jpeg" height="400">
   <h1>PDF Insight</h1>
 </div>
 
@@ -32,9 +32,9 @@ Experiment project with LLM RAG using llama3 and langchain
 
 ## Screenshots
 
-![alt text](./doc/sc1.png "Title")
+![alt text](./docs/sc1.png "Title")
 
-![alt text](./doc/sc2.png "Title")
+![alt text](./docs/sc2.png "Title")
 
 ## Reference
 - https://ollama.com/library/llama3
