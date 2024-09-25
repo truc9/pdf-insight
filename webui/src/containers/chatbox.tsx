@@ -57,7 +57,7 @@ export default function ChatBox() {
   }
 
   return (
-    <div className="flex flex-col bg-slate-300 w-full justify-center items-center">
+    <div className="flex flex-col bg-slate-100 w-full justify-center items-center">
       <div className="flex flex-col p-5 gap-3 h-full w-full xl:w-3/5 lg:w-2/3">
         <div className="flex-1 border p-3 rounded bg-white flex flex-col gap-2 overflow-y-auto shadow-lg">
           {chat.map((chat, index) => (

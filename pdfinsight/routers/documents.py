@@ -30,8 +30,6 @@ async def upload(
 ):
     success_paths = []
     failed_paths = []
-    # os.makedirs(UPLOAD_DIR, exist_ok=True)
-    # print(f"Ensure upload dir exist: {UPLOAD_DIR}")
 
     for file in files:
         file_path = f"{UPLOAD_DIR}/{file.filename}"
@@ -69,5 +67,5 @@ def load_doc(doc: SourceDocModel):
         print(error)
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content="Unable to load PDF to vectorstore",
+            content=f"Load failed due to {error}",
         )
