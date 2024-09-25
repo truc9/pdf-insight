@@ -320,3 +320,4 @@ cython_debug/
 #.idea/
 
 vectordb/
+data/
