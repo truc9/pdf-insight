@@ -6,6 +6,7 @@ from langchain_core.documents import Document
 
 VECTOR_STORE_PATH = os.path.join("tmp", "vectordb")
 
+
 class VectorStore:
     _embedding = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 

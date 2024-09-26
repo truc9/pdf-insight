@@ -86,7 +86,7 @@ export default function ChatBox() {
           {answer && (
             <div className="p-2 rounded bg-slate-50 shadow-lg">
               <div className="flex gap-2 items-center">
-                <div>
+                <div className="items-start">
                   <LiaRobotSolid size={22} />
                 </div>
                 <div className="flex flex-col">
